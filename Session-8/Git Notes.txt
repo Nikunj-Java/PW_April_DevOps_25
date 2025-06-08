@@ -1,0 +1,28 @@
+************************************************************
+Git Hub 
+************************************************************
+
+1. list the branches
+> git branch
+2. create a new branch
+> git branch <name of your branch>
+3. delete a branch (locally)
+> git branch -D <name of branch>  //locally & make sure you are nit in that branch
+4. delete the Branch Remotely
+> git push origin --delete <name of branch>
+5. switch to another branch and create a same file which exist on both the branches so that it can create conflict and try to merge the branch
+
+STEP:1 create a new branch with name: test
+> git branch test
+> add file conflict.txt    (add some data as well)
+STEP:2 create another branch with name: demo
+> git branch demo
+> add conflict.txt         (add some data as well)
+
+now goto> test
+> git checkout test
+> git merge
+
+
+goto VS Code> resolve the conflict
+> right hand side of panel approve it and its done
