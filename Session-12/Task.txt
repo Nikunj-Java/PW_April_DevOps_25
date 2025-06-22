@@ -1,0 +1,9 @@
+Task:1 
+- create a python program to take two input from user 
+- ask for which operator to be applied for calculation (+,-,*,/,%,**).
+- Based on That Give the Answer
+
+Task:2
+- Create a python program to check an application.log file contains 'ERROR' or not
+- if it contains and 'ERROR' then it will print a message that ERROR occurred in a Program
+- if not then the program will run smoothly
