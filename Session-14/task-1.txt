@@ -1,0 +1,3 @@
+Create a Regex program where 
+1. take mobile number input from user
+2. validate using country code and mobile number validation as per your need 

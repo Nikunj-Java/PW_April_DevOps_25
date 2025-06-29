@@ -1,0 +1,20 @@
+Step:1 Create Virtual Environment
+--------------------------------------------
+> python -m venv myenv
+-- it will create new folder 'myenv' and install requred dependencies of python
+
+Step:2 Activate Virtual Environment
+---------------------------------------------
+
+> myenv>Scripts>activate
+--you will see (myenv) at the start of your terminal line
+
+Step:3 install the libraries you want
+------------------------------------------
+
+> pip install requests
+
+
+Step:4 Deactivate Virtual Environment
+----------------------------------------
+> deactivate
