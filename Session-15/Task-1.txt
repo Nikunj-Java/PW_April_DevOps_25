@@ -1,0 +1,4 @@
+Using BeautifulSoup Extract the Links from Google.com
+- Create a Pythin Script and import BeautifulSoup4 
+- if it is not installed install using " pip install beautifulsoup4 "
+- finally Crowl/extract the data
