@@ -11,7 +11,6 @@ print("Page Title:",soup.title.text)
 
 #extracting all links
 print("\n links:")
-
 for link in soup.find_all("a"):
     print(link.get("href"))
 

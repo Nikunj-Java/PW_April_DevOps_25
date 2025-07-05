@@ -1,5 +1,4 @@
 from bs4 import BeautifulSoup
-
 ## install the dependency before running the above code
 ## pip install beautifulsoup4
 html='<html><body> <h1>Welcome to PW SKILLS</h1></body></html>'
@@ -15,10 +14,9 @@ html1="""
     <title>Physics Wallah</title>
 </head>
 <body>
-
     <h2>PW SKILLS</h2>
     <p class="info">WebAutomation.</p>
-    
+
 </body>
 </html>
 """
