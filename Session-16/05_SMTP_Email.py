@@ -3,8 +3,8 @@ from email.mime.text import MIMEText
  
 
 def send_email(subject,body):
-    sender_email="ganitniduniyanikunj10@gmail.com"
-    receiver_email="ganitniduniyanikunj10@gmail.com"
+    sender_email="youremail@gmail.com"
+    receiver_email="senderemail@gmail.com"
     password="ujvi lpmm ujaj uqyd" #your app password
     
     #goto> https://myaccount.google.com
