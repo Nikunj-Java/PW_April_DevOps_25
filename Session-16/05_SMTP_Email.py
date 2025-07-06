@@ -6,7 +6,7 @@ from email.mime.multipart import MIMEMultipart
 def send_email(subject,body):
     sender_email="senderemail@gmail.com"
     receiver_email="receiveremail@gmail.com"
-    password="ujvi lpmm ujaj uqyd" #your app password
+    password="your_APP_Password" #your app password
     
     #goto> https://myaccount.google.com
     #select>security> enable 2 step-verification
