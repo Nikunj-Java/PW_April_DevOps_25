@@ -1,0 +1,27 @@
+Task:
+- create Python command line tool using argparse that performs basic file operation (count -lines, word- frquency) and write tests for it
+- Set up Github action to
+    1. Run tests
+    2. check for linting error
+    3. Generate code coverage
+- file and folder structure
+
+
+file-cli-tool
+|__ .github
+|       |__ workflows
+|           |__ main.yml
+|__ cli
+|   |__ file_tool.py
+|
+|__tests
+|   |__test_file_tool.py
+|
+|__test_input.txt
+|
+|__requirements.txt
+|
+|__requrements-dev.txt
+|
+|__README.md
+
