@@ -1,0 +1,26 @@
+name: Python File Writer CI
+
+on: 
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with: 
+          python-version: '3.10'
+
+      - name: Install Pytest
+        run: pip install pytest
+
+      - name: Run tests with Pytest
+        run: pytest
