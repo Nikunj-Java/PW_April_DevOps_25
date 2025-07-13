@@ -1,0 +1,34 @@
+name: Node.js CI
+on: 
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18'
+    - name: Install Dependencies
+      run: npm install --save-dev mocha
+    - name: Run test
+      run : npx mocha 
+    - name: package build output as zip
+      run: |
+        mkdir output
+        cp -r src output/
+        cp package.json output
+        zip -r build.zip output
+    - name: Upload artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: build-zip
+        path: build.zip
+    
+
