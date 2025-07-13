@@ -1,34 +1,56 @@
 name: Node.js CI
+
 on: 
   push:
     branches: ["main"]
   pull_request:
     branches: ["main"]
+
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
-    - name: Setup Node.js
-      uses: actions/setup-node@v3
-      with:
-        node-version: '18'
-    - name: Install Dependencies
-      run: npm install --save-dev mocha
-    - name: Run test
-      run : npx mocha 
-    - name: package build output as zip
-      run: |
-        mkdir output
-        cp -r src output/
-        cp package.json output
-        zip -r build.zip output
-    - name: Upload artifact
-      uses: actions/upload-artifact@v4
-      with:
-        name: build-zip
-        path: build.zip
-    
+      - name: Checkout code
+        uses: actions/checkout@v3
 
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Install Dependencies
+        run: npm install
+      
+      - name: Make Mocha executable
+        run: chmod +x ./node_modules/.bin/mocha
+
+      - name: Run test
+        run: npm test 
+
+      - name: Package build output as zip
+        run: |
+          mkdir output
+          cp -r src output/
+          cp package.json output
+          zip -r build.zip output
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-zip
+          path: build.zip
+      - name : Notify Success Via Email
+        if: success()
+        uses: dawidd6/action-send-mail@v3
+        with: 
+          server_address: smtp.gmail.com
+          server_port: 587
+          username: your_email_id
+          password: your_app_password
+          subject: "CI Build Success -${{ github.repository}}"
+          body: |
+            The build for ${{ github.repository }} on branch ${{ github.ref_name}} succeeded.
+            commit: ${{ github.sha }}
+          to: recepients_email_id
+          from: your_email_id
