@@ -1,0 +1,6 @@
+Task:
+    write a github action CI pipeline setup that:
+        1. implements a basic function(is_even,is_odd,add,subtract,multiply,divide)
+        2. Uses unittesting for testing in python/ mocha for node Js
+        3. create Zip file at the end of pipeline success
+        4. notify the user via an Email with Subject and Body
