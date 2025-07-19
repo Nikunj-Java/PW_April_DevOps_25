@@ -53,7 +53,49 @@ select> free style project> give the name >give the description
 > click on apply and Save
 > build the project
 
+
 >now goto> you github repository and commit some changes , once a new change in your github repositoryis detected
 jenkins will automatically build the project and give you the result
 
 that same can be check in jenkins console output as well
+
+Note:
+ meaning: H/2 means----> H represents some hash, 2 represents 2 minutes
+            *----------> Hours
+            *----------> Day
+            *----------> Month
+            *----------> Every Day of Week
+******************************************************************
+Exercise: Integrating Plugins to the Jenkins
+******************************************************************
+> goto> manage Jenkins > Plugins> Available Plugins> Install Maven Integration> Install
+
+Create a Simple Pipeline Project 
+------------------------------
+> new item> select Pipeline Project> give the name > write your own Pipeline
+
+pipeline {
+    agent any
+
+    stages {
+        stage('Checkout') {
+            steps {
+                echo 'This is Checkout Stage'
+            }
+        }
+        stage('Build') {
+            steps {
+                echo 'This is Build Stage'
+            }
+        }
+        stage('Deployment') {
+            steps {
+                echo 'This is Deployment Stage'
+            }
+        }
+    }
+}
+
+
+Save and apply
+> build the pipline and check the console output
