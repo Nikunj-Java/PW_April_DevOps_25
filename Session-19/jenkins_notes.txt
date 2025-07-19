@@ -66,7 +66,7 @@ Note:
             *----------> Month
             *----------> Every Day of Week
 ******************************************************************
-Exercise: Integrating Plugins to the Jenkins
+Exercise:2 Integrating Plugins to the Jenkins
 ******************************************************************
 > goto> manage Jenkins > Plugins> Available Plugins> Install Maven Integration> Install
 
@@ -99,3 +99,35 @@ pipeline {
 
 Save and apply
 > build the pipline and check the console output
+
+******************************************************************
+Exercise:3 create a pipeline to check java version
+******************************************************************
+pipeline {
+    agent any
+
+    stages {
+        stage('Check Java Version') {
+            steps {
+                echo 'Check Java Version'
+                
+                sh 'java --version'
+                
+            }
+        }
+        
+    }
+}
+
+***********************************************************************
+TASK:1 Write a Jenkins script to execute various shell commands
+***********************************************************************
+
+***********************************************************************
+TASK:2 Write a Jenkins script check git version
+***********************************************************************
+
+***********************************************************************
+TASK:3 Write a Jenkins script to clone a github repository
+***********************************************************************
+
