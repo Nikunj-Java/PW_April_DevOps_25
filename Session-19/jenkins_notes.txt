@@ -37,3 +37,23 @@ Step: 7 Get Secret Inital Admin Password
 > sudo cat /var/lib/Jenkins/secrets/initialAdminPassword
 
 Step:8 Click on Save and Continue
+
+
+*******************************************************
+EXERCISE:1
+*******************************************************
+> goto> jenkins>dashboard>create new job>
+select> free style project> give the name >give the description
+> goto> scource code management>
+    GIT: select
+    URL: your github repository URL
+    Branches to build: */master or /main
+    POLL SCM:
+        H/2 * * * * 
+> click on apply and Save
+> build the project
+
+>now goto> you github repository and commit some changes , once a new change in your github repositoryis detected
+jenkins will automatically build the project and give you the result
+
+that same can be check in jenkins console output as well
