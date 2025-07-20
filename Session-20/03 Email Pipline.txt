@@ -1,0 +1,27 @@
+pipeline {
+    agent any
+    environment{
+        EMAIL_TO="ganitniduniyanikunj10@gmail.com"
+    }
+    stages {
+        stage('Test') {
+            steps {
+                echo 'Testing an Email'
+            }
+        }
+        stage('Testing') {
+            steps {
+                echo 'Welcome to PW SKILLS'
+            }
+        }
+    }
+    post{
+        failure{
+            emailext(
+                to:"${EMAIL_TO}",
+                subject: "Build Failed: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
+                body:"Please check and build logs at ${env.BUILD_URL}"
+            )
+        }
+    }
+}

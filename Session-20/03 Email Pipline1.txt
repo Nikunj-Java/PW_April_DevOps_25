@@ -1,0 +1,27 @@
+pipeline {
+    agent any
+    environment{
+        EMAIL_TO="youremail@gmail.com"
+    }
+    stages {
+        stage('Test') {
+            steps {
+                echo 'Testing an Email'
+            }
+        }
+        stage('mvn') {
+            steps {
+                sh ''' mvn clean install '''
+            }
+        }
+    }
+    post{
+        failure{
+            emailext(
+                to:"${EMAIL_TO}",
+                subject: "Build Failed: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
+                body:"Please check and build logs at ${env.BUILD_URL}"
+            )
+        }
+    }
+}
