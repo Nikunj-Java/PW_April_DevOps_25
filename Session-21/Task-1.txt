@@ -1,0 +1,3 @@
+Scenario: 1                                                 (10 min)
+    - Create user registration pytestcases for username and password
+    - also check the length of a password must be minimum 8 char long
