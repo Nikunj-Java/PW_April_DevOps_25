@@ -30,7 +30,7 @@ scroll_pause_time=2
 last_height=driver.execute_script("return document.body.scrollHeight")
 
 for _ in range(5): #scroll 5 times
-    driver.execute_script("windows.scrollTo(0, documenr.body.scrollHeight);")
+    driver.execute_script("windows.scrollTo(0, document.body.scrollHeight);")
     time.sleep(scroll_pause_time)
     new_height= driver.execute_script("return document.body.scrollHeight")
     if new_height == last_height:
