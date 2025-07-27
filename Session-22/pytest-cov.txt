@@ -4,4 +4,8 @@ pytest-cov is aplugin for pytest that measures code coverage of your python test
 pip install pytest-cov
 
 to geneerate console logging:
-run : pytest --cov=fb_login.py test_fb_login.py
+run : pytest --cov=fb_login test_fb_login.py
+
+to generate HTML File
+syntax: pytest --cov=<name_of_your_test_without.py> --cov-report=html
+run: pytest --cov=facebook_login --cov-report=html
