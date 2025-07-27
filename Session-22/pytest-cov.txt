@@ -1,0 +1,7 @@
+pytest-cov is aplugin for pytest that measures code coverage of your python test
+- it will tell you that what % of your code is tested - add which lines were or weren't executed during the testing.
+- to install pytest-cov
+pip install pytest-cov
+
+to geneerate console logging:
+run : pytest --cov=fb_login.py test_fb_login.py
