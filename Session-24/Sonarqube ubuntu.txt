@@ -1,0 +1,10 @@
+
+
+install SonarQube in Linux from the LINK
+
+> sudo wget <link>
+> unzip sonarqube-25.5.0.10.7428.zip
+> sudo apt install unzip
+move to the required directory
+> cd sonarqube-25.5.0.10.7428/bin/linux-x86-64
+> sudo ./sonar.sh start
