@@ -1,1 +1,4 @@
 sonarqube-25.7.0.110598/
+.pytests_cache/
+.scannerwork/
+__pycache__
