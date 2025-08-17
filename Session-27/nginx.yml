@@ -1,0 +1,26 @@
+---
+- name: Install nginx server
+  hosts: aws1
+  become: yes
+  tasks: 
+    - name: Install nginx
+      yum:
+        name: nginx
+        state: present
+    - name: Start nginx
+      service:
+        name: nginx
+        state: started
+        enabled: yes
+    - name: copy the index.html to default location
+      copy: 
+        src: index.html
+        dest: /usr/share/nginx/html/index.html
+        owner: nginx
+        group: nginx
+        mode: '0644'
+    - name: Restart nginx
+      service:
+        name: nginx
+        state: restarted
+  
