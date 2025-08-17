@@ -1,8 +1,16 @@
 ---
-- name: Install Nginx and Deplot index.html on ubuntu
+- name: Install Nginx and Deploy index.html on ubuntu
   hosts: aws1
   become: yes
   tasks:
+    - name: Update apt repository
+      apt:
+        update_cache: yes
+    - name: Install openJDK
+      apt:
+        name: openjdk-11-jdk
+        state: present
+   
     - name: Update apt repo
       apt:
         name: nginx
