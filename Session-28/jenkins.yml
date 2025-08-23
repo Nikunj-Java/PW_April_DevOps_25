@@ -1,0 +1,38 @@
+---
+- name: Install Jenkins on Ubuntu
+  hosts: aws1
+  become: yes
+
+
+  tasks:
+    - name: Install Java (open JDK 21)
+      apt:
+        name: openjdk-21-jre
+        state: present
+        update_cache: yes
+    - name: Add Jenkins repository key 
+      apt_key:
+        url: https://pkg.jenkins.io/debian-stable/jenkins.io-2023.key
+        state: present
+    - name: Add Jenkins Repository
+      apt_repository:
+        repo: deb  https://pkg.jenkins.io/debian binary/
+        state: present
+    - name: Update apt Cache 
+      apt:
+        update_cache: yes
+    - name: Install Jenkins
+      apt:
+        name: jenkins
+        state: present
+    - name: Start Jenkins Service
+      service: 
+        name: jenkins
+        state: started
+        enabled: yes
+    - name: Ensure port 8080 is open for Jenkins
+      ufw:
+        rule: allow
+        port: 8080
+        proto: tcp
+      when: ansible_facts['os_family'] == 'Debian'
