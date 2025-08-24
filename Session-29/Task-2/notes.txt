@@ -1,0 +1,10 @@
+Run the Below Command
+--------------------------------------------------------
+sudo ansible-playbook -i inventory.yml aws_website.yml
+
+Once the EC2 instance Will be Prepared it will Automatically prepare newinventory.yml file
+now run the bewlo Command
+
+sudo ansible-playbook -i newinventory.yml deploy_website.yml
+
+now_goto> aws> copy ip address:80 and hot in the browser
