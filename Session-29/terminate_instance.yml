@@ -1,0 +1,17 @@
+---
+- name: Terminate Ubuntu Ec2 instance
+  hosts: localhost
+  connection: local
+  gather_facts: no
+
+  vars_files:
+  - vars1.yml
+
+  tasks:
+    - name: Terminate the EC2 instance
+      amazon.aws.ec2_instance:
+        instance_ids:
+          - "{{ instance_id }}"
+        region: "{{ region }}"
+        state: absent
+        wait: yes
