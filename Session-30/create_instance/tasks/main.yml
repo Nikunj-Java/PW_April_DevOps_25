@@ -1,4 +1,3 @@
----
 - name: Launch EC2 Instance
   amazon.aws.ec2_instance:
     name: "{{ instance_name }}"
@@ -11,8 +10,14 @@
     wait: yes
     count: 1
     network:
-      - assign_public_ip: yes
+      assign_public_ip: yes
     tags:
       Name: "{{ instance_name }}"
       Environment: dev
+  register: ec2
+- name: Add new instance to inventory group 
+  add_host: 
+    name: "{{ item.public_ip_address }}"
+    groups: launched
+  loop: "{{ ec2.instances }}"
   

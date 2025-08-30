@@ -1,0 +1,6 @@
+region: us-east-1
+instance_name: dev-instance
+instance_type: t2.micro
+ami_id: ami-0360c520857e3138f
+key_name: nikunj
+security_group: launch-wizard-2

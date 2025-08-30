@@ -32,7 +32,11 @@ Role/
 
 
 Run:
-sudo ansible-playbook -i inventory.yml site.yml
+ansible-playbook site.yml
+
+-it will create new aws instance and that you can check the same on AWS
+Note: In The Example Given Here we Have only Created role for Create_instance so it will only work and rest two will be skipped
+
 
 
 
