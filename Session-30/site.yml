@@ -1,27 +1,17 @@
+---
 - name: Launch EC2 Instance
   hosts: localhost
   connection: local
-  gather_facts: no 
+  gather_facts: false
   vars_files:
     - vars.yml
   roles:
     - create_instance
 
-- name: wait for EC2 instance to appear in inventory
-  hosts: localhost
-  gather_facts: no
-  tasks:
-    - name: Pause to allow EC2 Registration
-      pause:
-        seconds: 60
-
+ 
 - name: Configure EC2 frontend
   hosts: launched
+  remote_user: ubuntu   # use ec2-user if Amazon Linux AMI
+  become: true
   roles:
-    - frontend 
-
-- name: Configure EC2 backend
-  hosts: launched
-  roles:
-    - backend 
-  
+    - frontend

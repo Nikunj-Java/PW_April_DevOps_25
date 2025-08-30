@@ -1,6 +1,6 @@
 all:
   hosts:
-    aws1:
-      ansible_host: 192.168.1.100
+    webserver:
+      ansible_host: 100.29.190.145
       ansible_user: ubuntu
-      ansible_ssh_private_key_file: nikunj.pem
+      ansible_ssh_private_key_file: ./nikunj.pem

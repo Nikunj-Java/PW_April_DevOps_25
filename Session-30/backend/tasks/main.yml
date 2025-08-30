@@ -1,19 +1,19 @@
 ---
 - name: Install Node.js
-  apt: 
+  apt:
     name: nodejs
     state: present
     update_cache: yes
+
 - name: Install npm
   apt:
     name: npm
     state: present
-    update_cache: yes
-- name: Deploy Backend app
+
+- name: Deploy backend app
   copy:
     src: app.js
-    dest: /var/www/html/app.js
+    dest: /home/ubuntu/app.js
+
 - name: Start backend app
-  shell: "nohup node /var/www/html/app.js &"
-  args:
-    chdir: /var/www/html
+  shell: "nohup node /home/ubuntu/app.js &"
