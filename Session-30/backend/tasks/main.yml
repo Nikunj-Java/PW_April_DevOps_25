@@ -1,16 +1,19 @@
 ---
-- name : Install Nginx
-  apt:
-    name: nginx 
+- name: Install Node.js
+  apt: 
+    name: nodejs
     state: present
     update_cache: yes
-  
-- name: Deploy Frontend code
+- name: Install npm
+  apt:
+    name: npm
+    state: present
+    update_cache: yes
+- name: Deploy Backend app
   copy:
-    src: index.html
-    dest: /var/www/html/index.html
-- name: Start and Enable Nginx
-  service:
-    name: nginx
-    state: started
-    enabled: yes
+    src: app.js
+    dest: /var/www/html/app.js
+- name: Start backend app
+  shell: "nohup node /var/www/html/app.js &"
+  args:
+    chdir: /var/www/html

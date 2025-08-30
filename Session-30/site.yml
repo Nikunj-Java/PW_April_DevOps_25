@@ -15,10 +15,13 @@
       pause:
         seconds: 60
 
-- name: Configure EC2 (Frontend + Backend)
-  hosts: tag_environment_dev
-  become: true
-  gather_facts: yes
+- name: Configure EC2 frontend
+  hosts: launched
   roles:
     - frontend 
-    - backend
+
+- name: Configure EC2 backend
+  hosts: launched
+  roles:
+    - backend 
+  
