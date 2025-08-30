@@ -1,2 +1,16 @@
 ---
-# tasks file for backend
+- name : Install Nginx
+  apt:
+    name: nginx 
+    state: present
+    update_cache: yes
+  
+- name: Deploy Frontend code
+  copy:
+    src: index.html
+    dest: /var/www/html/index.html
+- name: Start and Enable Nginx
+  service:
+    name: nginx
+    state: started
+    enabled: yes
