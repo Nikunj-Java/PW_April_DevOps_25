@@ -1,0 +1,38 @@
+Ansible Roles:
+------------------------------------------------------
+- Roles plays an important role to simplify the production of aws using ansible
+- it divides the complex creation of playbook into small and easy structured playbooks
+- To generate role in ansible we need ansible-galaxy to be installed on Ubuntu
+> ansible-galaxy init <name_of_your_role>
+Role/
+|
+|
+|---------------Backend
+|		|
+|		|
+|		|----task
+|			|
+|			|---main.yml
+|
+|
+|---------------Fronted
+|		|
+|		|
+|		|----task
+|			|
+|			|----main.yml
+|
+|--------------------site.yml (main Playbook File)
+
+1. write code in backend/task/main.yml
+2. write code in frontend/tasks/main.yml
+3. copy paste the .pem key here
+4. Create Inventory File
+5. Create and Write code in site.yml file
+
+
+Run:
+sudo ansible-playbook -i inventory.yml site.yml
+
+
+

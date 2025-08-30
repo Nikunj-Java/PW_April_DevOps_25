@@ -1,0 +1,22 @@
+- name: Launch EC2 Instance
+  host: localhost
+  connection: local
+  gather_facts: no 
+  vars_files:
+    - vars.yml
+  roles:
+    - create_instance
+- name: wait for EC2 instance to appear in inventory
+  hosts: localhost
+  gather_facts: no
+  tasks:
+    - name: Pause to allow EC2 Registration
+      pause:
+        seconds: 60
+- name: Configure EC2 (Frontend + Backend)
+  hosts: tag_environment_dev
+  become: true
+  gather_facts: yes
+  role:
+    - frontend 
+    - backend

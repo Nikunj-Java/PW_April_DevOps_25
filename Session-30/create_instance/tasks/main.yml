@@ -1,0 +1,18 @@
+---
+- name: Launch EC2 Instance
+  amazon.aws.ec2_instance:
+    name: "{{ instance_name }}"
+    key_name: "{{ key_name }}"
+    instance_type: "{{ instance_type }}"
+    image_id: "{{ ami_id }}"
+    region: "{{ region }}"
+    security_groups: 
+      - "{{ security_group }}"
+    wait: yes
+    count: 1
+    network:
+      - assign_public_ip: yes
+    tags:
+      Name: "{{ instance_name }}"
+      Environment: dev
+  
