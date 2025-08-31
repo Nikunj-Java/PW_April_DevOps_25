@@ -31,3 +31,44 @@ Why It is Useful?
     - if a task is failing you can target just one host for troubleshooting without affecting others
 
 You can also use without --limit Vs With Limit
+
+
+LoadBalancer
+------------------------
+- A LoadBalancer(LB) is like a traffic cop for your servers.
+- when many users try to access your application (or a website), the load balancer distribute the incoming traffic accross multiple servers.
+- This ensures that no single server gets overloaded.
+- if one server goes dowwn , the load balancer can redirec traffic to heavy servers, improving availabilty.
+- it widely use: Scalability, high Availaibity,Performace,Felixibility
+
+Types of Load Balancer:
+1. Hardware LB 
+2. Software LB
+3. Cloud LB (Most commany used)
+    - aws (ELB- Elastic Load Balancer)
+    - Azure( Azure Load Balancer)
+    - GCP (Cloud Load Balancer)
+
+How Load Blanacer will Work???
+-----------------------------------------------
+1. client--> Load Balancer---> Server 1
+2. Client--> Load Balancer---> Server 2
+3. Client--> Load Balancer---> Server 3
+
+Load Balancer decides which server gets each request using algorithm like
+1. Round Robin
+2. Least Connections
+3. IP HASH
+
+Create jenkins_lb w.r.t jenkins.yml
+
+run:
+ansible-playbook -i inventory_jenkins.yml jenkins_lb.yml 
+[make sure both instances are running perfectly]
+
+if you rally want to check the laod balancer
+- create two aws ubuntu instance> install nginx> create two index.html file
+- in first index.html file <h1> Hello from Instance-1</h1>
+- in second index.html file <h1> Hello From Instance-2</h1>
+
+now create loadblanacer>So loadblanacer will decide based on the algorithm which instance to call 

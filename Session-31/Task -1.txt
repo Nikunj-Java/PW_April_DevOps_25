@@ -1,0 +1,3 @@
+Write an Ansible Program that automatically create Two AWS Instances 
+- must create two separate Dynamic Inventory File
+- Using That inventory file use limit in ansible

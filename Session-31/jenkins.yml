@@ -1,6 +1,6 @@
 ---
 - name: Install Jenkins On ubuntu
-  hosts: aws1
+  hosts: aws2
   become: yes
 
 

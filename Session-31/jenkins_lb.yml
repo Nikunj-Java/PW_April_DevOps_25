@@ -1,0 +1,41 @@
+---
+- name: Create Classic ELB for Jenkins
+  hosts: localhost
+  connection: local
+  gather_facts: no
+
+  vars:
+    region: us-east-1
+    vpc_subnets:
+      - subnet-0eb4a39f2aa68ff5e
+      - subnet-0eb4a39f2aa68ff5e
+    instance_ids:
+      - i-0786fad39bd3afe38     
+      - i-04336ea738f329854
+    security_group_ids:
+      - sg-099b41538eff29bd1   
+
+  tasks:
+    - name: Create Classic Load Balancer
+      amazon.aws.elb_classic_lb:
+        name: jenkins-lb
+        region: "{{ region }}"
+        state: present
+        subnets: "{{ vpc_subnets }}"
+        listeners:
+          - protocol: http
+            load_balancer_port: 80
+            instance_protocol: http
+            instance_port: 8080
+        instance_ids: "{{ instance_ids }}"
+        security_group_ids: "{{ security_group_ids }}"
+
+    - name: Get ELB info
+      amazon.aws.elb_classic_lb_info:
+        names: ["jenkins-lb"]
+        region: "{{ region }}"
+      register: elb_info
+
+    - name: Show ELB DNS Name
+      debug:
+        msg: "Jenkins Load Balancer DNS: {{ elb_info.elbs[0].dns_name }}"
