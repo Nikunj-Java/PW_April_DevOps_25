@@ -1,0 +1,33 @@
+create Limit in Ansible Playbook
+
+Step-1 Create two Ubuntu instance
+usig given inventory file
+
+Step-2 use any of the host to limit the initialization
+> sudo ansible-playbook -i inventory_jenkins.yml jenkins.yml --limit "aws1"
+
+
+What does --limit do?
+- By Default Anisble Runs the Playbook on all hosts in the hosts: group you specify.
+- --limit restrict execution to only the hosts(s) you mentioned
+
+- Example: if your inventory_jenkins file has aws1 and aws2 , and you run with --lkimit "aws1", then only aws1 get the jenkins installtion
+
+Why It is Useful?
+1. Testing changes safely.
+    - suppose you are deploying new versionb of jenkins or a configuration change. you can try it first on aws1 (test server ) using --limit "aws1" instead of all servers.
+
+2. Selective Execution:
+    - May be only one server (aws2) needs the update /fix not all servers
+    - instead of edidting playbooks or inventories you just run:
+
+    ansible-playbook -i inventory_jenkins.yml jenkins.yml --limit "aws2"
+
+3. Rolling Update:
+    - in profuction you rerly update all serverat once
+    - you might update one server at a time with --limit , check stabilty, then proceed.
+
+4. Debugging:
+    - if a task is failing you can target just one host for troubleshooting without affecting others
+
+You can also use without --limit Vs With Limit
