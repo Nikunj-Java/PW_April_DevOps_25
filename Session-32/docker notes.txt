@@ -29,10 +29,10 @@ Exercise:1
 > sudo docker images
 
 3. Run the Container with specific port number
-> sudo docker run -p 8080:8080 docker/getting-started
+> sudo docker run -p 80:80 docker/getting-started
 
 4. If you want to run Container in Background just add '-d'
-> sudo docker run -p 8080:8080 -d docker/getting-started
+> sudo docker run -p 80:80 -d docker/getting-started
 
 5. get the list of running containers
 > sudo docker container ls
@@ -43,3 +43,12 @@ it will give you the tutorial page
 
 7. if you want to stop the container
 > sudo docker stop <name of container>
+
+8. if you want to start the container
+> sudo docker start <name of container>
+
+8. remove the container
+> sudo docker rm <name of container>
+
+9. if container is running and you want to remove without stopping it
+> sudo docker rm -f <name of container>
