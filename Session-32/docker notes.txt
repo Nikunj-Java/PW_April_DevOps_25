@@ -52,3 +52,31 @@ it will give you the tutorial page
 
 9. if container is running and you want to remove without stopping it
 > sudo docker rm -f <name of container>
+
+
+*************************************************************************************
+Exercise: 2 Pull The images Available from docker Registry
+*************************************************************************************
+> sudo docker pull ubuntu
+> sudo docker pull mysql 
+> sudo docker pull mysql:5.7
+
+
+************************************************************************************
+Exercise: 3 Pull the Custom Images from Git Hub
+************************************************************************************
+> git clone https://github.com/Nikunj-Java/docker_master.git
+> ls
+> cd docker_master
+
+Step:1 Create image in docker container
+> sudo docker build -t myimage .   (. is mendatory)
+
+Step:2 Check the image
+> sudo docker images
+
+Step:3 Run The Container
+> sudo docker run -d --name mycontainer -p 80:80 myimage
+
+Step:4 open in browser
+> localhost:80
