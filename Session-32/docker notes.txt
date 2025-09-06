@@ -16,5 +16,30 @@ Link: https://docs.docker.com/engine/install/ubuntu/
 # Install Docker
 > sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
 
-# To check Docker VERSION_CODENAME
+# To check Docker Version
 > docker --version
+
+***************************************************************************************
+Exercise:1
+***************************************************************************************
+1. pull the images
+> sudo docker pull docker/getting-started
+
+2. get the list of images
+> sudo docker images
+
+3. Run the Container with specific port number
+> sudo docker run -p 8080:8080 docker/getting-started
+
+4. If you want to run Container in Background just add '-d'
+> sudo docker run -p 8080:8080 -d docker/getting-started
+
+5. get the list of running containers
+> sudo docker container ls
+
+6. goto> browser> localhost:8080
+
+it will give you the tutorial page
+
+7. if you want to stop the container
+> sudo docker stop <name of container>
