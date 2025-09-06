@@ -80,3 +80,20 @@ Step:3 Run The Container
 
 Step:4 open in browser
 > localhost:80
+
+*******************************************************************************************
+Exercise: 4 Push the Images to Docker hub
+*******************************************************************************************
+Step:1 Create Docker hub Account and do the Sign in
+
+Step:2 Follow The below Steps
+
+> sudo docker login
+
+[Note: During the login proceess may be it will ask for username and password so enter it correctly, as while entering password it is not visible due to privacy settings, or it can drive you through authenticate page so authenticate it]
+
+ username:
+ password: (one time code enter it and activate)
+
+ push preiviousely craeted images to docker hub
+ > sudo docker push nikunj0510/myimage 
