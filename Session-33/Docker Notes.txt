@@ -93,3 +93,21 @@ now you can create worker node and allow it to join the network by using below t
     docker swarm join --token SWMTKN-1-654yukeywbjaa753jjfnuw8h011yff55j05dpobr3b6ki073ce-2yz018gpqhuk4gt67flpklqpe 172.28.70.174:2377
 
 To add a manager to this swarm, run 'docker swarm join-token manager' and follow the instructions.
+
+Step:2 Create Service in this docker swarm (optional)
+-------------------------------------------------------------------------
+> git clone <your repo>
+> ls
+> cd docker_master
+> sudo docker build -t myimage .
+> sudo docker images
+> curl localhost:80
+check the output
+
+STEP:3 SCALE THE DOCKET CONTAINER ON DOCKER SWARM
+----------------------------------------------------
+> sudo docker service create -p 80:80 --name myservice myimage 
+output: verify: Service 7aintl30pzkhs8bi1541yg67i converged
+> sudo docker service ls
+> sudo docker service scale myservice=3
+> sudo docker service ps myservice
