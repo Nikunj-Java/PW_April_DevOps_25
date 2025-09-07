@@ -48,3 +48,48 @@ Now Lets run some Basic commands of MySQL
 
 8. get the list of all data in a table
 > select * from students
+
+
+********************************************************************************************************************
+EXERCISE: 6 DOCKER SWARM
+********************************************************************************************************************
+- Docker swarm is an orchestration management tool  that runs on Docker Application
+- it helps end-user in creating and deploying a cluster of docker nodes
+- each node of a docker swarm is a docker daemon and all interacts using DOCKER API
+- if one of the container fails we can use the swarm to correct that failure
+- it can rwschedule container on node failures
+- manages multiple containers running on node 
+
+1. swarm cluster
+> a group of machines running on docker manged as one
+
+2. Manager Node: 
+> Handle cluster management
+
+3. Worker Node: 
+> Run the Actual container
+
+4. Service:
+> A defination of how a contanerized Application will work(run) like images, ports,repplicas
+
+5. Task:
+> a running instance of a container (unit of scheduling)
+
+---------------------------------------------------------------------------------------------------------
+
+Set the Permission:
+> sudo chmod 666 /var/run/docker.sock
+
+Step:1 Initialize Docker swarm
+---------------------------------------
+> sudo docker swarm init
+
+if its showing multiple ip address are in use choose one of them to initialise the swarm like this:
+> sudo docker swarm init --advertise-addr 172.28.70.174
+
+now you can create worker node and allow it to join the network by using below token:
+> To add a worker to this swarm, run the following command:
+
+    docker swarm join --token SWMTKN-1-654yukeywbjaa753jjfnuw8h011yff55j05dpobr3b6ki073ce-2yz018gpqhuk4gt67flpklqpe 172.28.70.174:2377
+
+To add a manager to this swarm, run 'docker swarm join-token manager' and follow the instructions.
