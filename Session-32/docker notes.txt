@@ -96,4 +96,5 @@ Step:2 Follow The below Steps
  password: (one time code enter it and activate)
 
  push preiviousely craeted images to docker hub
+ > sudo docker tag myimage nikunj0510/myimage
  > sudo docker push nikunj0510/myimage 

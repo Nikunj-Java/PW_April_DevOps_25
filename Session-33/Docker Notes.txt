@@ -1,0 +1,50 @@
+********************************************************************************************
+EXERCISE: 5 CREATING MYSQL DATABASE IN DOCKER CONTAINER
+********************************************************************************************
+
+> sudo docker pull mysql 
+> sudo docker images
+> sudo docker run --name my-app-db -e MYSQL_ROOT_PASSWORD=password -d -p 3306:3306 mysql
+> sudo docker container ls
+
+install MYSQL
+-------------------------
+> sudo apt update
+> sudo apt install mysql-client
+> mysql --version
+
+    Local_ip_address: 127.0.0.1
+    or AWS public ip address: 3.88.70.216
+> mysql -u root -h 127.0.0.1 -P 3306 -p
+
+then you will see 
+-----------------------------
+mysql>
+-----------------------------
+That means you are successfully connected to mysql
+
+Now Lets run some Basic commands of MySQL
+
+1. To Get the List of All Databases:
+> show databases 
+
+2. to create database
+> create database pwskills;
+
+3. To Use the database
+> use <name of database>
+
+4. Create Table in Database
+> create table students (id int auto_increment primary key, name varchar(200), email varchar(200));
+
+5. get the list of all available tables;
+> show tables;
+
+6. to get the description of Table
+>  describe <name_of_table>
+
+7. insert a value in table
+> insert into students (name,email) values("Nikunj Soni","nikunj@pw.live");
+
+8. get the list of all data in a table
+> select * from students
