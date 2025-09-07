@@ -1,0 +1,55 @@
+Create TWO AWS Ubuntu Instance 
+Instance-1 & Instance-2
+---------------------------------
+> install docker
+> check the version
+
+Instance-1
+-------------------------------
+> create custom image from github
+> create image 
+> initialize the swarm
+> copy paste the 
+
+To add a worker to this swarm, run the following command:
+
+    docker swarm join --token SWMTKN-1-1ehpa3drqlzlrtg5435p33ih4xxq97rnjqt93118qku650y55j-0jgdzukrbmatulpgheyw40nhc 172.31.21.244:2377
+
+To add a manager to this swarm, run 'docker swarm join-token manager' and follow the instructions.
+
+Now > Goto> 2nd instance> run the above command by adding 'sudo'
+
+Instance-2
+----------------------
+
+> sudo docker swarm join --token SWMTKN-1-1ehpa3drqlzlrtg5435p33ih4xxq97rnjqt93118qku650y55j-0jgdzukrbmatulpgheyw40nhc 172.31.21.244:2377
+docker swarm join --token SWMTKN-1-1ehpa3drqlzlrtg5435p33ih4xxq97rnjqt93118qku650y55j-0jgdzukrbmatulpgheyw40nhc 172.31.21.244:2377
+
+lets solve this error:
+> sudo docker swarm leave
+
+
+goto> instance-1 (Leader/manager/manager)> security group and add below rules
+Ports allowed between nodes:
+
+TCP 2377 (cluster management)
+> choose Custom TCP > port: 2377
+
+TCP/UDP 7946 (node communication)
+choose Custom TCP > port: 7946
+choose Custom UDP > port: 7946
+
+UDP 4789 (overlay network VXLAN)
+choose Custom UDP > port: 4789
+
+after setting all this rules now goto> instance-2 and run the command again
+> sudo docker swarm join --token SWMTKN-1-1ehpa3drqlzlrtg5435p33ih4xxq97rnjqt93118qku650y55j-0jgdzukrbmatulpgheyw40nhc 172.31.21.244:2377
+output: This node joined a swarm as a worker.
+
+Instance-1
+-------------------
+> docker node ls
+output: 
+ID                            HOSTNAME           STATUS    AVAILABILITY   MANAGER STATUS   ENGINE VERSION
+1ni8mi0ovtpuasshbjgbsr7d4 *   ip-172-31-21-244   Ready     Active         Leader           28.4.0
+v4myl38tuxne1dojg3l16h7a4     ip-172-31-22-207   Ready     Active                          28.4.0
