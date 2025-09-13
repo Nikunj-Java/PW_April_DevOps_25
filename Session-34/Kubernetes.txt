@@ -90,3 +90,26 @@ Note: This will create a service that maps the random high port on your local ma
 output:
 http://127.0.0.1:32773
 ❗  Because you are using a Docker driver on linux, the terminal needs to be open to run it.
+
+------------------------------------------------------------
+Exercise: 2 Using ConfigMap Kubernetes
+------------------------------------------------------------
+
+- it will inject the configuration into must contains some important information like apiversion ,kind,data
+Goal: Serve a custom HTML File in a Nginx container using ConfigMap
+
+Step:1 Create configmap.yml file  (Available in Folder)
+Step:2 Apply the configMap File
+Step:3 Create a deployment using configMap (Available in folder)
+Step:4 Apply the deployment
+> kubectl apply -f deployment.yml
+    output: deployment.apps/nginx-deployment created
+
+Step:5 Expose it with service
+> kubectl expose deployment nginx-deploy --port=80 --type=NodePort
+    output: service/nginx-deploy exposed
+
+Step:6 Get the url
+> minikube service my-nginx-sep --url
+    output: http://127.0.0.1:33455
+❗  Because you are using a Docker driver on linux, the terminal needs to be open to run it.
