@@ -31,4 +31,62 @@ choose your OS: Linux
 
 #Get the Running Pods
 -------------------------------
-> minikube kubectl --get pods -A
+> kubectl get pods
+
+Terminology
+-------------------------------
+1. POD:Smallest unit in kubernetes -- it will run your container
+2. Deployment: Manages pods -- helps in updates , scaling ,restarts 
+3. ConfigMap: stores non-sensetive appconfig(link , .env)
+4. secret: stores sensitive data like passwords
+5. ingress: Routes the traffic from outside into your service
+6. PVC: Percistance Storage for your Application
+
+How to set up Kubernetes Cluster Locally??
+-----------------------------------------------
+Step:1 Install the following
+-----------------------------------------------
+1. kubectl
+2. minikube
+
+-----------------------------------------------
+Step:2 Start the Minikube
+-----------------------------------------------
+> minikube start
+
+-----------------------------------------------
+Step:3 Check the Status
+-----------------------------------------------
+> kubectl get nodes
+
+-----------------------------------------------
+Exercise:1 Deploy a Simple Application 
+-----------------------------------------------
+A. Create A Deployment
+
+> kubectl create deployment my-nginx-sep --image=nginx
+output: deployment.apps/my-nginx-sep created
+
+B. check the Status
+> kubectl get pods
+
+NAME                            READY   STATUS    RESTARTS   AGE
+my-nginx-5b584c864b-bdbjq       1/1     Running   0          2m13s
+my-nginx-sep-688955b9d5-9fb7r   1/1     Running   0          39s
+mysql-0                         1/1     Running   0          2m9s
+mysql-1                         1/1     Running   0          2m6s
+mysql-2                         1/1     Running   0          2m4s
+nginx-deploy-58b577b64-sggbf    0/1     Pending   0          2m12s
+
+Once the Status is running we can proceed to the next part
+
+c. Expose it with a service
+> kubectl expose deployment my-nginx-sep --port=80 --type=NodePort
+output: service/my-nginx-sep exposed
+
+Note: This will create a service that maps the random high port on your local machine
+
+> minikube service my-nginx-sep --url
+output:
+http://127.0.0.1:32773
+❗  Because you are using a Docker driver on linux, the terminal needs to be open to run it.
