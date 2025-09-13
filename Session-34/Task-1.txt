@@ -1,0 +1,7 @@
+Create index.html file and deploy it on kubernetes cluster using configMap and Nginx
+1. Create 'index.html'
+2. Create 'ConfigMap'
+3. Create 'Deployment'
+4. Apply The Deployment
+5. Expose the Deployment
+6. Check the service

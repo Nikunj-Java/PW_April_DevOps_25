@@ -1,0 +1,88 @@
+Step 1: Create a simple index.html
+-------------------------------------------
+<!-- index.html -->
+<!DOCTYPE html>
+<html>
+<head>
+  <title>My First K8s App</title>
+</head>
+<body>
+  <h1>Hello from Kubernetes </h1>
+</body>
+</html>
+
+Step 2: Create a ConfigMap from index.html
+-------------------------------------------------
+> kubectl create configmap my-index-html --from-file=index.html
+
+
+> kubectl get configmap my-index-html -o yaml
+
+Step 3: Create a Deployment (Nginx serving index.html)
+--------------------------------------------------------
+nginx-deploy.yml:
+-------------------------
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-deploy
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:latest
+        ports:
+        - containerPort: 80
+        volumeMounts:
+        - name: html-volume
+          mountPath: /usr/share/nginx/html/index.html
+          subPath: index.html
+      volumes:
+      - name: html-volume
+        configMap:
+          name: my-index-html
+----------------------------------------
+Apply It:
+
+> kubectl apply -f nginx-deploy.yml
+
+Step 4: Expose the Deployment as a Service
+-----------------------------------------------
+> kubectl expose deployment nginx-deploy --type=NodePort --port=80
+
+
+Check service:
+------------------------
+> kubectl get svc
+
+
+You’ll see something like:
+
+nginx-deploy   NodePort   10.96.233.100   <none>        80:31234/TCP   10s
+
+
+Here 31234 is the NodePort.
+
+Step 5: Access Your Application
+----------------------------------------
+If using Minikube:
+
+> minikube service nginx-deploy
+
+
+If using a real cluster, open in browser:
+
+http://<NodeIP>:<NodePort>
+─────────┐
+│ NAMESPACE │     NAME     │ TARGET PORT │          URL           │
+├───────────┼──────────────┼─────────────┼────────────────────────┤
+│ default   │ nginx-deploy │             │ http://127.0.0.1:38709 │
+└───────────┴──────────────┴─────────────┴────────────────────────┘
