@@ -1,0 +1,36 @@
+Rolling Updates in Kubernetes
+-----------------------------------------
+Step:1 Spin up minikube & verify
+-----------------------------------------
+> minikube start
+> kubectl version
+> kubectl get nodes
+> minikube status
+
+------------------------------------------------------
+Step:2 Deployments: Rolling updates & rollbacks
+------------------------------------------------------
+create 'nginx-deploy.yml' (file Available in Folder)
+
+Note: once the File is Ready Aplly and Expose
+
+> kubectl apply -f nginx-deploy.yml
+    output: deployment.apps/web-depoly created
+> kubectl get pods -l app=web
+    output: 
+    NAME                          READY   STATUS              RESTARTS   AGE
+web-depoly-66b64fb756-9nbz6   0/1     ContainerCreating   0          26s
+web-depoly-66b64fb756-mmnnc   0/1     ContainerCreating   0          26s
+web-depoly-66b64fb756-t7qfb   0/1     ContainerCreating   0          26s
+
+# rollout new version
+> kubectl set image deployment/web-depoly web=nginx:1.23.0
+
+# get the status of Rollout
+> kubectl rollout status deployment/web-deploy
+
+# Rollback if needed
+> kubectl rollout undo deployment/web-deploy
+> kubectl expose deployment web-deploy --type=ClusterIp --port=80
+
+
