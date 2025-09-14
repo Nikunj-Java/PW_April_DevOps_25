@@ -33,4 +33,51 @@ web-depoly-66b64fb756-t7qfb   0/1     ContainerCreating   0          26s
 > kubectl rollout undo deployment/web-deploy
 > kubectl expose deployment web-deploy --type=ClusterIp --port=80
 
+**********************************************************************
+Helm
+**********************************************************************
 
+Step: 1 Install Helm
+---------------------------------------------------------
+> sudo snap install helm
+
+Step:2 Add a Helm Repo
+---------------------------------------------------------
+> helm repo add bitnami https://charts.binami.com/bitnami
+
+> helm repo update
+# search for available charts
+> helm search repo nginx
+
+Step:3 Install a charts
+---------------------------------------------------------
+> helm install nginx-demo bitnami/nginx
+
+Verify: 
+> helm list
+> kubectl get all -l app.kubernetes.io/instance=nginx-demo
+
+Step:4 Access the Service
+-----------------------------------------------------------
+> minikube service nginx-demo
+
+Step:5 Update the release
+------------------------------------------------------------
+> helm upgrade nginx-demo bitnami/nginx --set image.tag=1.25.5
+
+check the rollout:
+-------------------------------------------------------------
+> kubectl get pods -l app.kubernetes.io/instance=nginx-demo
+
+Step:6 Rollback:
+--------------------------------------------------------------
+> helm history nginx-demo
+
+# Rollback to the previous one 
+> helm rollback nginx-demo 1
+output: Rollback was a success! Happy Helming!
+
+Step:7 Uninstall the helm
+---------------------------------------------------------------
+> helm uninstall nginx-demo
+output: release "nginx-demo" uninstalled
