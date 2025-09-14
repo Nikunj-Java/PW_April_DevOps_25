@@ -21,3 +21,24 @@ Hint:
         nginx-deploy   NodePort    10.98.10.233   <none>        80:30635/TCP   61s
 8. Run and check
 > minikube service nginx-deploy
+
+9. ROll OUT TO NEW VERSION
+----------------------------
+change your index.html file 
+
+<p> Version 2.0</p>
+
+Re-apply:
+> kubectl apply -f index-configmap.yml
+
+Restart the Deployment so pods pick the new config
+> kubectl rollout restart deployment nginx-deploy
+
+Check the Rollout Status
+> kubectl rollout status deployment nginx-deploy
+
+
+ROLL BACK
+-----------------------------------------------------
+>  kubectl rollout undo deployment nginx-deploy
+> kubectl rollout status deployment nginx-deploy
