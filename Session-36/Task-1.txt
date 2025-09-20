@@ -2,6 +2,12 @@ Deploy Nginx with StatefulSet (Stable Pod identity)
 Hint: 
     1. Create 'nginx-stateful.yml'
     2. Apply the file 'nginx-stateful.yml'
+            > kubectl apply -f nginx-stateful.yml
     3. Verify the Pods are running
+            > kubectl get pods -l app=nginx
     4. Expose Nginx StatefulSet with a Service
-    5. check the browser
+            > kubectl describe pod nginx-0
+            > kubectl exec -it nginx-0 -- bash
+    5. check the browser or use curl localhost
+            > apt-get update && apt-get install -y curl
+            > curl localhost
