@@ -1,0 +1,46 @@
+Replica Set:
+----------------------------------------------------------
+- it is specfying numbers od pods replicas which are running all the items
+- if any pod fails then it will  recreate in replcement 
+
+Deployment
+----------------------------------------------------------
+- it provides all controllers updates and all the rollback features
+- if any pod fails or any controller fails it can restrat automatically
+
+****************************************************************************
+CREATE A POD
+****************************************************************************
+Step:1 Create pod.yml file and save it 
+Step:2 run the Below Commands
+    - kubectl apply -f pod.yml
+    - kubectl get pods
+    - kubectl describe pod nginx
+
+****************************************************************************
+CREATE A REPLICASET
+****************************************************************************
+Step:1 Create replicaset.yml file and save it
+Step:2 Run the Below Commands 
+    - kubectl apply -f replicaset.yml
+    - kubectl get replicaset
+    - kubectl get pods
+
+****************************************************************************
+SCALING UP
+****************************************************************************
+- kubectl scale replicaset my-replicaset --replicas=5
+- kubectl get replicaset
+
+****************************************************************************
+SCALING DOWN
+****************************************************************************
+- kubectl scale replicaset my-replicaset --replicas=2
+- kubectl get replicaset
+
+You can edit the number of replicas in file as well as aplly or directly use --replicas and give the replicas to scale up or down
+Replicas also maintains no of pods based on the number of replicas. that meansif you will manually delete the pods replicaset will recreate the another pod to maintain the number of  replicas
+
+- kubectl delete pod <pod-name>
+- kubectl get pods (you will see that the newly created pod in the list)
+- kubectl delete replicaset my-replicaset
