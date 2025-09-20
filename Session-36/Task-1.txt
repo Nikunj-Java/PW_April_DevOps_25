@@ -1,0 +1,7 @@
+Deploy Nginx with StatefulSet (Stable Pod identity)
+Hint: 
+    1. Create 'nginx-stateful.yml'
+    2. Apply the file 'nginx-stateful.yml'
+    3. Verify the Pods are running
+    4. Expose Nginx StatefulSet with a Service
+    5. check the browser

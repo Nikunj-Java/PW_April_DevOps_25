@@ -44,3 +44,37 @@ Replicas also maintains no of pods based on the number of replicas. that meansif
 - kubectl delete pod <pod-name>
 - kubectl get pods (you will see that the newly created pod in the list)
 - kubectl delete replicaset my-replicaset
+
+***************************************************************************************
+STATEFULSET
+***************************************************************************************
+- A statefulset is a kubernetes controller that manages Pods, but specifically for stateful application (apps that need to remember data or maintain identity).
+- in case of Deployment /Replicaset while creating naming order is random alphabatic words with random names
+    in the satefulset it is labelled from app-1, app-2, app-3
+
+    Create 3 files as shown
+    ------------------------------
+    1. mysql-pvc.yml
+    2. mysql-stafeul.yml
+    3. mysql.yml
+    -----------------------------------------
+    Step:1 Apply the PVC 
+    > kubectl apply -f mysql-pvc.yml
+    > kubectl get pvc
+    
+    Step:2 Apply the MYSQL Service
+    > kubectl apply -f mysql.yml
+    > kubectl get svc 
+
+    Step:3 Apply the satefulset
+    > kubectl apply -f mysql-stateful.yml
+    > kubectl get pods -l app=mysql 
+
+    Step:4 Verfiy the Storage
+    > kubectl get pvc
+
+    Step:5 Connect to Mysql Pod
+    > kubectl exec -it mysql-0 -- bash
+    > mysql -u root -p
+    Now Its time to enter your password (my password is 'admin' you can check on 'mysql-stateful.yml' file)
+    > admin
