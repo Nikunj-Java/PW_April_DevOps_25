@@ -1,0 +1,73 @@
+1. Does frontend-sa have permission to read configmaps?
+> kubectl auth can-i get configmaps --as=system:serviceaccount:example-app:frontend-sa -n example-app
+
+2. Does frontend-sa get secrets? (should be 'no' if not allowed)
+> kubectl auth can-i get secrets --as=system:serviceaccount:example-app:frontend-sa -n ex
+
+Networking in kubernetes
+-----------------------------
+1. Create a namespace example-app
+2. Deploy 3 simple pods/service
+3. Verify baseline connectivity
+4. apply ingress policy
+5. show that the activity is blocked
+6. add expicit allow rules: frontend-> backend and backend-> db
+7. Show safe egree default-deny and allow DNS if you enabled it
+8. Tets and Debug
+
+Create 2 files:
+    1. resources.yml
+    2. networkPolicy.yml
+Run the Below Commands
+1. Apply the resources (namespace+ pods /service)
+> kubectl apply -f resources.yml
+
+2. wait for pods to be ready 
+> kubectl -n example-app rollout status deploy/backend --timeout=60s
+> kubectl -n example-app rollout status deploy/db --timeout=60s
+> kubectl -n example-app rollout status deploy/frontend --timeout=60s
+> kubectl -n example-app get pods -n example-app -o wide
+
+3. Baseline test (before any network policy) -from frontend 
+> FRONTEND_POD=$(kubectl -n example-app get pod -l app=frontend -o jsonpath='{.items[0].metadata.name}')
+    
+----------------------#http test should return "backend"--------------------------------
+> kubectl -n example-app exec -it "$FRONTEND_POD" -- curl -sS backend:8080 || echo "curl failed"
+
+----------------------#db test (should return "db")--------------------------------
+
+> kubectl -n example-app exec -it "$FRONTEND_POD" -- curl -sS db:5432 || echo "db curl failed"
+
+4. Apply network policies (start with default-deny-ingress)
+
+> kubectl apply -f networkPolicy.yml
+
+5. Test again immediately
+> kubectl -n example-app exec -it "$FRONTEND_POD" -- curl -sS backend:8080 || echo "frontend->backend blocked"
+> kubectl -n example-app exec -it "$FRONTEND_POD" -- curl -sS db:5432 || echo "frontend->db blocked"
+
+6. How to check?
+a. show network policies
+----------------------------------------------------------------------------
+> kubectl -n example-app get networkpolicy
+> kubvectl -n example-app describe networkpolicy allow-frontend-to-backend
+
+b. check which pod the policy selects
+----------------------------------------------------------------------------
+kubectl -n example-app get pods --show-labels
+
+if a connection is blocked check CNI logs in kube-system
+> kubectl -n kube-system get pods | egrep -i "calico|cilium|weave"
+> kubectl -n kube-system logs <cni-pod-name>
+
+c. List of events:
+-------------------------------------------------------------------------------
+
+> kubectl get events -n example-app --sort-by=.metadata.creationTimestamp
+
+
+5. Revert back the changes/ cleanup
+> kubectl -n example-app delete networkpolicy -allow
+
+6. Delete the whole namespace
+> kubectl delete namespace example-app

@@ -1,5 +1,0 @@
-1. Does frontend-sa have permission to read configmaps?
-> kubectl auth can-i get configmaps --as=system:serviceaccount:example-app:frontend-sa -n example-app
-
-2. Does frontend-sa get secrets? (should be 'no' if not allowed)
-> kubectl auth can-i get secrets --as=system:serviceaccount:example-app:frontend-sa -n ex
