@@ -1,0 +1,62 @@
+# namespace
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: example-app
+---
+# Service account for frontend
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: frontend-sa
+  namespace: example-app
+---
+# role that only allows reading configMaps in the namespace
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: configmap-reader
+  namespace: example-app
+rules:
+- apiGroups: [""]
+  resources: ["configmaps"]
+  verbs: ["get", "list", "watch"]
+---
+# bind the role to the frontend service account  
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: bind-config-reader
+  namespace: example-app
+subjects:
+- kind: ServiceAccount
+  name: frontend-sa
+  namespace: example-app
+roleRef:
+  kind: Role
+  name: configmap-reader
+  apiGroup: rbac.authorization.k8s.io
+---
+# cluster role for readonly access to pods/nodes for monitoring
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: pod-reader
+rules:
+- apiGroups: [""]
+  resources: ["pods", "nodes"]
+  verbs: ["get", "list", "watch"]
+---
+# exxample clusterBinding (binds cluster role to a service account in kube-system namespace
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: monitoring-bind
+subjects:
+- kind: ServiceAccount
+  name: monitoring-sa
+  namespace: kube-system
+roleRef:
+  kind: ClusterRole
+  name: pod-reader
+  apiGroup: rbac.authorization.k8s.io
