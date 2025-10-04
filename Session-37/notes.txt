@@ -50,11 +50,11 @@ Run the Below Commands
 a. show network policies
 ----------------------------------------------------------------------------
 > kubectl -n example-app get networkpolicy
-> kubvectl -n example-app describe networkpolicy allow-frontend-to-backend
+> kubectl -n example-app describe networkpolicy allow-frontend-to-backend
 
 b. check which pod the policy selects
 ----------------------------------------------------------------------------
-kubectl -n example-app get pods --show-labels
+> kubectl -n example-app get pods --show-labels
 
 if a connection is blocked check CNI logs in kube-system
 > kubectl -n kube-system get pods | egrep -i "calico|cilium|weave"

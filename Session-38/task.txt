@@ -1,0 +1,49 @@
+Create all the examples using a single terraform file
+
+Solution:
+
+provider "aws" {
+    region = var.region
+}
+
+#ec2 instace
+resource "aws_instance" "my_ec2" {
+    ami = var.ami
+    instance_type = var.instance_type
+
+      tags = {
+    Name = "afrinsinstance"
+  }
+}
+
+#dynamodb
+resource "aws_dynamodb_table" "simple_table" {
+    name = var.aws_dynamodb_table_name
+    billing_mode = var.billing_mode
+    
+
+    attribute {
+        name = var.attribute_name
+        type = "S"
+    }
+
+    hash_key = var.hash_key
+}
+
+#s3 bucket and object
+resource "aws_s3_bucket" "my_bucket" {
+  bucket = "terraform-bucket-1234502510104" 
+  acl    = "private"
+
+  tags = {
+    Name        = "MyDemoBucket"
+    Environment = "Dev"
+  }
+}
+
+resource "aws_s3_object" "myfile" {
+  bucket       = aws_s3_bucket.my_bucket.bucket 
+  key          = "myfile.txt"                   
+  source       = "myfile.txt"                   
+  content_type = "text/html"
+}
