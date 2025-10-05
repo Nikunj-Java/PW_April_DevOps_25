@@ -1,0 +1,35 @@
+Example-3
+------------------------------
+Terraform Configuration Files
+1. EC2 instance
+2. S3 Bucket
+3. a Simple VPC
+
+create a folder
+|
+|-----main.tf
+|
+|-----variables.tf
+|
+|-----output.tf
+|
+|-----gitignore.tf
+
+
+Example:4 Custom VPC Module
+
+create a folder
+|
+|-----main.tf
+|
+|-----variables.tf
+|
+|-----output.tf
+|
+|-----modules
+    |
+    |------main.tf
+    |
+    |------variables.tf
+    |
+    |------outputs.tf
