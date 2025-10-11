@@ -1,0 +1,10 @@
+create an aws instance with jenkins to be installed using terraform using either of this
+(a) use user_data
+(b) using remote_exec
+
+hint:
+to install a jenkins on ubuntu
+1> choose ubuntu ami
+2> install java on ubuntu
+3> install jenkins
+4> open port 8080
