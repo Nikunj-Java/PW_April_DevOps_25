@@ -24,7 +24,7 @@ create a folder
 |
 |-----variables.tf
 |
-|-----output.tf
+|-----output.tf   //optional
 |
 |-----modules
     |
