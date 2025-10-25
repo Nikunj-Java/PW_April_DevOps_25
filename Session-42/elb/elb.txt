@@ -1,0 +1,10 @@
+What is ELB?
+--------------------
+Elastic Load Balancer is a AWS service that automatically distributes 
+incoming application traffic across multiple targets (EC2, IP Address, Lambda Functions, Container)
+to increasee availability and fault tolerence
+
+There are 3 types of Load Balancer we have
+1. Application Load Balancer
+2. Network Load Balancer
+3. Gateway Load Balancer
