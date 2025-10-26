@@ -1,0 +1,5 @@
+1. Create a VPC +2 Public Subnets(of different AZs)
+2. Create an Internet facing ALB (HTTP:80)
+3. Launch 2 EC2 instances that run a simple Express.js app on port 3000
+4. ALB forward traffic (80 -> 3000) to the instances
+5. The app returns an HTML page showing which EC2 instance served the request (hostname)
