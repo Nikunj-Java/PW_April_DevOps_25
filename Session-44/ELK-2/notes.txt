@@ -1,0 +1,27 @@
+Kibana:
+ip_address:5601
+
+ElasticSearch:
+ip_address:9200
+
+if not working
+----------------------------------------------
+> sudo ssh -i /mnt/c/Users/NEW/.ssh/id_rsa ubuntu@<public_ip>
+output: ubuntu@ip-172-31-41-132:
+
+> sudo docker ps
+> sudo docker logs kibana
+> sudo docker logs elasticsearch
+> sudo docker logs logstash
+
+-----------------------------------------------
+if you are getting 
+CONTAINER ID IMAGE COMMAND CREATED STATUS PORTS NAMES
+
+> ls /opt/elk
+
+output> docker-compose.yml  logstash.conf
+
+> cd /opt/elk
+> sudo docker-compose up -d
+> sudo docker ps

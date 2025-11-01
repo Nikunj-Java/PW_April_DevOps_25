@@ -1,46 +1,15 @@
-#!/bin/bash
-
-# Update & install Docker
+#!/bin/bash -xe
 apt-get update -y
 apt-get install -y docker.io docker-compose
 
-# Enable Docker service
 systemctl enable docker
 systemctl start docker
 
-# Create working directory
 mkdir -p /opt/elk
 cd /opt/elk
 
-# Create Logstash pipeline config
-cat <<'EOF' > logstash.conf
-input {
-  beats {
-    port => 5044
-  }
-  tcp {
-    port => 5000
-    codec => json
-  }
-}
-
-filter {
-  if [message] =~ "ERROR" {
-    mutate { add_tag => ["error_log"] }
-  }
-}
-
-output {
-  elasticsearch {
-    hosts => ["http://elasticsearch:9200"]
-    index => "logs-%{+YYYY.MM.dd}"
-  }
-  stdout { codec => rubydebug }
-}
-EOF
-
-# Create docker-compose.yml
-cat <<'EOF' > docker-compose.yml
+# --- Create docker-compose.yml ---
+cat <<EOF > docker-compose.yml
 version: '3'
 services:
   elasticsearch:
@@ -49,22 +18,22 @@ services:
     environment:
       - discovery.type=single-node
       - xpack.security.enabled=false
-      - ES_JAVA_OPTS=-Xms512m -Xmx512m
     ports:
       - "9200:9200"
-    volumes:
-      - es_data:/usr/share/elasticsearch/data
+    networks:
+      - elk
 
   logstash:
     image: docker.elastic.co/logstash/logstash:7.17.10
     container_name: logstash
     ports:
       - "5044:5044"
-      - "5000:5000"
     volumes:
       - ./logstash.conf:/usr/share/logstash/pipeline/logstash.conf
     depends_on:
       - elasticsearch
+    networks:
+      - elk
 
   kibana:
     image: docker.elastic.co/kibana/kibana:7.17.10
@@ -75,15 +44,27 @@ services:
       - "5601:5601"
     depends_on:
       - elasticsearch
+    networks:
+      - elk
 
-volumes:
-  es_data:
+networks:
+  elk:
+    driver: bridge
 EOF
 
-# Start ELK stack
-docker-compose up -d
+# --- Logstash Config ---
+cat <<EOF > logstash.conf
+input {
+  stdin {}
+}
 
-# Wait and verify containers
+output {
+  elasticsearch {
+    hosts => ["http://elasticsearch:9200"]
+  }
+  stdout { codec => rubydebug }
+}
+EOF
+
 sleep 30
-docker ps > /opt/elk/docker-status.log
-curl -X GET "http://localhost:9200" > /opt/elk/es-health.log
+docker-compose up -d
