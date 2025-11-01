@@ -31,5 +31,14 @@ Step:6 open the grafana: http://ip_address:3000
     - username= admin
     - password= admin
 > reset the password
+> on the dashboard> click the grafana icon on left side
+    > DATA SOURCES> click on Prometheus> give the name as prometheus
+    > enter the url: http://3.91.47.25:9090
+    > click on save and test
+    output: 
+    Successfully queried the Prometheus API.
+    Next, you can start to visualize data by building a dashboard, or by querying data in the Explore view.
+
+Now you can create your own dashbord here
 
 
