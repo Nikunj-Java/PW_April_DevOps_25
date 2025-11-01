@@ -1,0 +1,10 @@
+key generation
+-----------------------
+> ssh-keygen -t rsa -b 4096 -C "nikunj@gmail.com"
+
+What is ELK?
+-----------------------
+E - Elastic Search - Stores and indexes logs for fast searching and analytics
+L - Logstash - transforms and ships from different sources
+K - Kibana - Visualize data in dashboards and charts
+-----------------------
