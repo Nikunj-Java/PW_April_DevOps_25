@@ -45,41 +45,29 @@ resource "aws_instance" "logstash_server" {
 
    #user_data              = file("setup_logstash.sh")
    user_data = <<-EOF
-               #!/bin/bash
-               sudo yum update -y
-               sudo amazon-linux-extras install -y java-openjdk11
-               #add elastic repo
-               cat <<EOT >> /etc/yum.repos.d/elastic.repo
-               [elastic-7.x]
-               name=Elastic repository for 7.x packages
-               baseurl=https://artifacts.elastic.co/packages/7.x/yum
-               gpgcheck=1
-               gpgkey=https://artifacts.elastic.co/GPG-KEY-elasticsearch
-               enabled=1
-               autorefresh=1
-               type=rpm-md
-               EOT
-               sudo yum install -y logstash
+              #!/bin/bash
+              set -e
 
-               # create pipeline config file
-               cat <<EOT >> /etc/logstash/conf.d/logstash.conf
-               input {
-                   beats {
-                       port => 5044
-                   }
-               }
-               filter {
-                   stdout { codec => rubydebug }
-               }
-               output {
-                   elasticsearch {
-                       hosts => ["http://localhost:9200"]
-                   }
-               }
-               EOT
-               sudo systemctl enable logstash
-               sudo systemctl start logstash
-               EOF
+              # Update packages
+              sudo apt-get update -y
+              sudo apt update
+              sudo apt install fontconfig openjdk-21-jre
+
+              # Add Jenkins key and repo (new method)
+              sudo wget -O /etc/apt/keyrings/jenkins-keyring.asc https://pkg.jenkins.io/debian-stable/jenkins.io-2023.key
+
+              echo "deb [signed-by=/etc/apt/keyrings/jenkins-keyring.asc]" https://pkg.jenkins.io/debian-stable binary/ | sudo tee /etc/apt/sources.list.d/jenkins.list > /dev/null
+
+              # Update and install Jenkins
+              sudo apt update
+              sudo apt install jenkins
+
+              # Enable and start Jenkins
+              sudo systemctl daemon-reload
+              sudo systemctl enable jenkins
+              sudo systemctl start jenkins
+            EOF
+ #sudo cat /var/lib/jenkins/secrets/initialAdminPassword
 
     tags = {
         Name = "logstash-demo"
