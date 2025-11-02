@@ -1,0 +1,6 @@
+Logstash
+-----------------------------
+1. install java & logstash
+2. Create a Logstash pipeline config file
+3. Start the Logstash Service 
+4. Use provider, keypair and security group
