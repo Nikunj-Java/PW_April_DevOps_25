@@ -1,25 +1,27 @@
 #!/bin/bash
+# Update system and install dependencies
 sudo yum update -y
 sudo yum install -y python3 git
 
-pip install flask boto3
+# Install Flask and Boto3
+pip3 install flask boto3
 
+# Create Flask app directory
 mkdir -p /home/ec2-user/flask_app
-cat <<EOF > /home/ec2-user/flask_app/app.py
 cd /home/ec2-user/flask_app
 
-cat  <<'EOF' > app.py
+# Write the Flask application
+cat <<'EOF' > app.py
 from flask import Flask, request, render_template_string
 import boto3
 from botocore.exceptions import ClientError
 
 app = Flask(__name__)
 
-# DynamoDB resource (uses credentials already configured on your system)
+# DynamoDB table reference (use IAM role or local credentials)
 dynamodb = boto3.resource('dynamodb', region_name='us-east-1')
 table = dynamodb.Table('usertable')
 
-# Simple HTML form (Bootstrap)
 HTML_FORM = """
 <!DOCTYPE html>
 <html lang="en">
@@ -58,26 +60,15 @@ def home():
 def submit():
     user_id = request.form['UserID']
     email = request.form['Email']
-
     try:
-        # ✅ Must include the same key name as the DynamoDB primary key
-        table.put_item(
-            Item={
-                'UserID': user_id,
-                'Email': email
-            }
-        )
-        return f"""
-        <b>User saved successfully!</b><br>
-        <b>UserID:</b> {user_id}<br>
-        <b>Email:</b> {email}<br><br>
-        <a href="/">← Go Back</a>
-        """
+        table.put_item(Item={'UserID': user_id, 'Email': email})
+        return f"<b>✅ User saved successfully!</b><br>UserID: {user_id}<br>Email: {email}<br><br><a href='/'>← Go Back</a>"
     except ClientError as e:
-        return f" Error saving user: {e.response['Error']['Message']}"
+        return f"❌ Error saving user: {e.response['Error']['Message']}"
 
 if __name__ == '__main__':
-    app.run(debug=True)
-
+    app.run(host='0.0.0.0', port=80)
 EOF
-sudo python3 app.py &
+
+# Run the app on port 80 in background
+sudo nohup python3 /home/ec2-user/flask_app/app.py > /home/ec2-user/flask_app/app.log 2>&1 &
