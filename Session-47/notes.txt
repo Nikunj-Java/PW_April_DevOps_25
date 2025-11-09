@@ -1,0 +1,4 @@
+step:1 Create Python Flask Application for Image Upload
+Step:2 Create S3 bucket with Required Permissions to Store images on the bucket
+Step:3 Deploy This Application to AWS using Terraform
+Step:4 Merge S3 Bucket Code with Terraform Infrastructure
