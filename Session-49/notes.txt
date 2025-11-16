@@ -47,3 +47,28 @@
     
     check :
     aws s3api get-bucket-encryption --bucket my-practise-bucket-nikunj
+9. Empty the Bucket
+> aws s3 rm s3://my-practise-bucket-nikunj --recursive
+
+10. delete the bucket
+> aws s3api delete-bucket --bucket my-practise-bucket-nikunj --region us-east-1
+
+note: if it will throw an error:
+step:1 remove all versions:
+--------------------------------
+    aws s3api delete-objects \
+  --bucket my-practise-bucket-nikunj \
+  --delete "$(aws s3api list-object-versions --bucket my-practise-bucket-nikunj \
+  --query '{Objects: Versions[].{Key:Key,VersionId:VersionId}}')"
+
+Step:2 Remove all delete markers
+---------------------------------
+aws s3api delete-objects \
+  --bucket my-practise-bucket-nikunj \
+  --delete "$(aws s3api list-object-versions --bucket my-practise-bucket-nikunj \
+  --query '{Objects: DeleteMarkers[].{Key:Key,VersionId:VersionId}}')"
+
+Step:3 Delete the bucket
+--------------------------------
+> aws s3api delete-bucket --bucket my-practise-bucket-nikunj --region us-east-1
+
