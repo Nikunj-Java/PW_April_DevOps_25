@@ -97,20 +97,14 @@ resource "aws_instance" "flask_app" {
 
   user_data = <<-EOF
               #!/bin/bash
-              sudo apt-get update -y
-              sudo apt-get install -y python3 python3-pip awscli unzip
-
-              # Upgrade pip to latest
-              sudo pip3 install --upgrade pip
-
-              # Install Flask & boto3
-              sudo pip3 install flask boto3
+              sudo apt update -y
+              sudo apt install -y python3-pip awscli
+              pip3 install flask boto3
 
               mkdir -p /home/ubuntu/flask_app
               cd /home/ubuntu/flask_app
 
-              # Create Flask app
-              cat <<'PYEOT' > app.py
+              cat <<'PYEOF' > app.py
               from flask import Flask, render_template_string, request
               import boto3
 
@@ -118,7 +112,6 @@ resource "aws_instance" "flask_app" {
 
               S3_BUCKET = "${aws_s3_bucket.upload_bucket.bucket}"
               S3_REGION = "us-east-1"
-
               s3 = boto3.client("s3", region_name=S3_REGION)
 
               HTML_FORM = '''
@@ -127,7 +120,7 @@ resource "aws_instance" "flask_app" {
               <head>
                   <meta charset="UTF-8">
                   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                  <title>Upload Image to S3</title>
+                  <title>Upload Image</title>
                   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
               </head>
               <body class="bg-light">
@@ -156,21 +149,20 @@ resource "aws_instance" "flask_app" {
                   if file:
                       s3.upload_fileobj(file, S3_BUCKET, file.filename)
                       url = f"https://{S3_BUCKET}.s3.{S3_REGION}.amazonaws.com/{file.filename}"
-                      return f"<h3>✅ File uploaded successfully!</h3><a href='{url}'>View File</a>"
+                      return f"✅ File uploaded successfully! Access it <a href='{url}'>{url}</a>"
 
               if __name__ == '__main__':
                   app.run(host='0.0.0.0', port=5000)
-              PYEOT
+              PYEOF
 
-              # Run Flask app in background
-              nohup python3 /home/ubuntu/flask_app/app.py > /home/ubuntu/flask_app/app.log 2>&1 &
+              cd /home/ubuntu/flask_app
+              nohup python3 app.py > app.log 2>&1 &
               EOF
 
   tags = {
-    Name = "FlaskAppInstance"
+    Name = "FlaskS3App"
   }
 }
-
 
 # Output public IP
 output "flask_app_url" {
