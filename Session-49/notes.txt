@@ -72,3 +72,28 @@ Step:3 Delete the bucket
 --------------------------------
 > aws s3api delete-bucket --bucket my-practise-bucket-nikunj --region us-east-1
 
+
+11. upload large files using multipart
+-------------------------------------------
+Step:1 initial Upload
+> aws s3 create-multipart-upload --bucket my-practise-bucket-nikunj --ket <your_file>.zip
+
+output: UPLOAD_ID
+(Note: Copy This Upload ID For NEXT Step)
+
+Step:2 Upload Parts (min 5 MB each)
+--------------------------------------------
+> aws s3api upload-part \
+    --bucket my-practise-bucket-nikunj \
+    --key bigfile.zip \
+    --part-number 1 \
+    --body part1.zip \
+    --upload-id <UPLOAD_ID>
+
+Step:3 Complete Multipart Upload
+--------------------------------------------
+> aws s3api complete-multipart-upload \
+    --bucket my-practise-bucket-nikunj \
+    --key bigfile.zip \
+    --multipart-upload file://parts.json
+    --upload-id <UPLOAD_ID>
