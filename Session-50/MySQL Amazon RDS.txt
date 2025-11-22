@@ -1,0 +1,59 @@
+###############################################################
+Create Security Group for RDS
+###############################################################
+
+aws ec2 create-security-group \
+--group-name my-rds-sg \
+--description "Security Group for MYSQL RDS"
+
+Authorize MySQL:
+-------------------
+aws ec2 authorize-security-group-ingress \
+--group-name my-rds-sg \
+--protocol tcp \
+--port 3306 \
+--cidr 0.0.0.0/0
+###############################################################
+Create DB Subnet Group
+###############################################################
+aws rds create-db-subnet-group \
+  --db-subnet-group-name my-db-subnet-group \
+  --db-subnet-group-description "Subnet group for RDS MySQL" \
+  --subnet-ids subnet-06a145d973370b2f1  subnet-0eb4a39f2aa68ff5e
+
+get the list of subnets
+--------------------------------
+aws ec2 describe-subnets --query "Subnets[*].{ID:SubnetId,AZ:AvailabilityZone,VPC:VpcId}" --output table
+
+##################################################################
+Create MYSQL RDS DB
+##################################################################
+aws rds create-db-instance \
+  --db-instance-identifier mymysql \
+  --db-instance-class db.t3.micro \
+  --engine mysql \
+  --engine-version 8.0 \
+  --master-username admin \
+  --master-user-password MyStrongPassword123 \
+  --allocated-storage 20 \
+  --backup-retention-period 7 \
+  --publicly-accessible \
+  --db-subnet-group-name my-db-subnet-group \
+  --vpc-security-group-ids sg-077173a1d5e93373f
+
+
+####################################################################
+Check the Status of RDS Instance
+#####################################################################
+aws rds describe-db-instances \
+  --db-instance-identifier mymysql
+
+#####################################################################
+Get the RDS Endpoints
+#####################################################################
+aws rds describe-db-instances \
+  --db-instance-identifier mymysql \
+  --query "DBInstances[0].Endpoint.Address" \
+  --output text
+
+Output: mymysql.cgz4ygysml88.us-east-1.rds.amazonaws.com
