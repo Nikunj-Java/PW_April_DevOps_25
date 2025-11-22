@@ -57,3 +57,10 @@ aws rds describe-db-instances \
   --output text
 
 Output: mymysql.cgz4ygysml88.us-east-1.rds.amazonaws.com
+
+####################################################################
+Delete The RDS
+####################################################################
+aws rds delete-db-instance \
+  --db-instance-identifier my-mysql-db \
+  --skip-final-snapshot
