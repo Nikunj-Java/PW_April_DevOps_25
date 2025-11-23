@@ -3,10 +3,24 @@ provider "aws" {
 }
 
 # -------------------------------
-# S3 BUCKET FOR ARTIFACTS
+# VPC & SUBNETS
+# -------------------------------
+data "aws_vpc" "default" {
+  default = true
+}
+
+data "aws_subnets" "default" {
+  filter {
+    name   = "vpc-id"
+    values = [data.aws_vpc.default.id]
+  }
+}
+
+# -------------------------------
+# S3 BUCKET FOR CODEDEPLOY ARTIFACTS
 # -------------------------------
 resource "aws_s3_bucket" "codedeploy_bucket" {
-  bucket = "my-codedeploy-demo-bucket-nikunj"
+  bucket        = "my-codedeploy-demo-bucket-nikunj"
   force_destroy = true
 }
 
@@ -17,12 +31,12 @@ resource "aws_iam_role" "ec2_role" {
   name = "EC2CodeDeployRole"
 
   assume_role_policy = jsonencode({
-    Version = "2012-10-17"
+    Version = "2012-10-17",
     Statement = [{
-      Effect = "Allow"
+      Effect = "Allow",
       Principal = {
         Service = "ec2.amazonaws.com"
-      }
+      },
       Action = "sts:AssumeRole"
     }]
   })
@@ -47,7 +61,7 @@ resource "aws_iam_instance_profile" "ec2_instance_profile" {
 # SECURITY GROUP
 # -------------------------------
 resource "aws_security_group" "web_sg" {
-  name   = "web-sg1"
+  name   = "web-sg-nikunj"
   vpc_id = data.aws_vpc.default.id
 
   ingress {
@@ -74,23 +88,11 @@ resource "aws_security_group" "web_sg" {
   }
 }
 
-# Default VPC & Subnets
-data "aws_vpc" "default" {
-  default = true
-}
-
-data "aws_subnets" "default" {
-  filter {
-    name   = "vpc-id"
-    values = [data.aws_vpc.default.id]
-  }
-}
-
 # -------------------------------
 # EC2 INSTANCE
 # -------------------------------
 resource "aws_instance" "webserver" {
-  ami                    = "ami-0c82d36f3d14ed4c5" # Amazon Linux 2023 (ap-south-1)
+  ami                    = "ami-0d176f79571d18a8f" # Amazon Linux 2023
   instance_type          = "t2.micro"
   subnet_id              = data.aws_subnets.default.ids[0]
   vpc_security_group_ids = [aws_security_group.web_sg.id]
@@ -109,15 +111,15 @@ resource "aws_instance" "webserver" {
 # IAM ROLE FOR CODEDEPLOY SERVICE
 # -------------------------------
 resource "aws_iam_role" "codedeploy_service_role" {
-  name = "CodeDeployServiceRole"
+  name = "CodeDeployServiceRole1"
 
   assume_role_policy = jsonencode({
-    Version = "2012-10-17"
+    Version = "2012-10-17",
     Statement = [{
-      Effect = "Allow"
+      Effect = "Allow",
       Principal = {
         Service = "codedeploy.amazonaws.com"
-      }
+      },
       Action = "sts:AssumeRole"
     }]
   })
@@ -132,7 +134,7 @@ resource "aws_iam_role_policy_attachment" "codedeploy_service_policy" {
 # CODEDEPLOY APPLICATION
 # -------------------------------
 resource "aws_codedeploy_app" "webapp" {
-  name = "MyWebApp1"
+  name             = "MyWebApp1"
   compute_platform = "Server"
 }
 
@@ -153,6 +155,5 @@ resource "aws_codedeploy_deployment_group" "group" {
       type  = "KEY_AND_VALUE"
     }
   }
-
-  load_balancer_info {}
 }
+

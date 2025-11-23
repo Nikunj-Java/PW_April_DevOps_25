@@ -1,0 +1,5 @@
+Run This after Terraform setup is completed
+>goto>your instance> connect> run below commands
+sudo yum install -y httpd
+sudo systemctl enable httpd
+sudo systemctl start httpd
