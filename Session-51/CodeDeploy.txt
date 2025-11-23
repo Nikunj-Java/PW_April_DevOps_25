@@ -1,0 +1,198 @@
+What is AWS CodeDeploy? (Simple Explanation)
+AWS CodeDeploy helps you deploy application code automatically to:
+
+EC2 instances
+
+On-prem servers
+
+Auto Scaling Groups
+
+ECS
+
+With CodeDeploy you can:
+
+Upload your app to S3/GitHub
+
+Deploy it to EC2 automatically
+
+Run hooks (BeforeInstall, AfterInstall etc.)
+
+Rollback on failure
+
+Step-1: Create an EC2 Instance (With IAM Role)
+1. Open EC2 → Launch Instance
+
+Name: MyAppServer
+
+OS: Amazon Linux 2023 (Free Tier)
+
+Type: t2.micro
+
+Key pair: Choose your key (or create new)
+
+2. Create IAM Role for EC2
+
+Go to:
+IAM → Roles → Create role → AWS service → EC2
+
+Attach:
+
+✔ AmazonS3ReadOnlyAccess
+✔ AmazonEC2RoleforAWSCodeDeploy (or manually attach CodeDeployAgent access)
+
+Name it:
+
+EC2CodeDeployRole
+
+3. Assign the role during EC2 creation
+
+Go to Advanced settings → IAM instance profile
+Select: EC2CodeDeployRole
+
+Launch the instance.
+
+Step-2: Install CodeDeploy Agent on EC2
+
+SSH into EC2:
+
+ssh -i mykey.pem ec2-user@<public-ip>
+
+
+Update & install dependencies:
+
+sudo dnf update -y
+sudo dnf install -y ruby wget
+
+
+Install CodeDeploy Agent:
+
+REGION=ap-south-1
+wget https://aws-codedeploy-$REGION.s3.$REGION.amazonaws.com/latest/install
+chmod +x ./install
+sudo ./install auto
+
+
+Start agent:
+
+sudo systemctl enable codedeploy-agent
+sudo systemctl start codedeploy-agent
+sudo systemctl status codedeploy-agent
+
+
+Status must show: running
+
+Step-3: Create IAM Role for CodeDeploy Service
+
+CodeDeploy needs permission to deploy apps to EC2.
+
+Go to:
+IAM → Roles → Create Role
+
+Trusted entity: CodeDeploy
+
+Attach Policy:
+✔ AWSCodeDeployRole
+
+Role name: CodeDeployServiceRole
+
+Step-4: Tag EC2 Instance
+
+CodeDeploy uses tags to identify target servers.
+
+Go to EC2 → select your instance → Tags → Add:
+
+Key = Env
+Value = Dev
+
+Step-5: Create S3 Bucket for Deployment Files
+aws s3 mb s3://my-codedeploy-demo-bucket --region ap-south-1
+
+Step-6: Prepare Application Files
+
+Create demo app:
+
+myapp/
+ ├── index.html
+ ├── appspec.yml
+ └── scripts/
+       ├── install.sh
+       ├── start.sh
+
+index.html
+<h1>Hello from CodeDeploy!</h1>
+
+appspec.yml (MOST IMPORTANT FILE)
+version: 0.0
+os: linux
+files:
+  - source: /
+    destination: /var/www/html
+
+hooks:
+  BeforeInstall:
+    - location: scripts/install.sh
+      runas: root
+  AfterInstall:
+    - location: scripts/start.sh
+      runas: root
+
+scripts/install.sh
+#!/bin/bash
+yum install -y httpd
+systemctl stop httpd
+
+scripts/start.sh
+#!/bin/bash
+systemctl start httpd
+systemctl enable httpd
+
+Zip the app:
+cd myapp
+zip -r ../app-v1.zip .
+cd ..
+
+
+Upload to S3:
+
+aws s3 cp app-v1.zip s3://my-codedeploy-demo-bucket/
+
+Step-7: Create CodeDeploy Application
+aws deploy create-application \
+  --application-name MyWebApp \
+  --compute-platform Server \
+  --region ap-south-1
+
+Step-8: Create Deployment Group
+aws deploy create-deployment-group \
+  --application-name MyWebApp \
+  --deployment-group-name MyWebAppDG \
+  --deployment-config-name CodeDeployDefault.OneAtATime \
+  --ec2-tag-filters Key=Env,Value=Dev,Type=KEY_AND_VALUE \
+  --service-role-arn arn:aws:iam::<your-account-id>:role/CodeDeployServiceRole \
+  --region ap-south-1
+
+Step-9: Create Deployment
+aws deploy create-deployment \
+  --application-name MyWebApp \
+  --deployment-group-name MyWebAppDG \
+  --s3-location bucket=my-codedeploy-demo-bucket,key=app-v1.zip,bundleType=zip \
+  --region ap-south-1
+
+
+You will receive deployment-id.
+
+Step-10: Check Deployment Status
+aws deploy get-deployment \
+  --deployment-id <your-deployment-id> \
+  --region ap-south-1
+
+🎉 Verification
+
+Go to your EC2 Instance Public IP:
+
+http://<your-public-ip>/index.html
+
+
+You should see:
+
+Hello from CodeDeploy!
