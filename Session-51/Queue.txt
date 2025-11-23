@@ -1,0 +1,29 @@
+Queue 
+|
+|--- Standard Type(Default)
+|
+|---FIFO Queue( First In First Out)
+
+(A) Standard Type
+> aws sqs create-queue --queue-name MyStandardQueue
+
+(B) FIFO Type
+--No Order is Preserved |  No Duplicates
+> aws sqs create-queue \
+    --queue-name MyFifoQueue.fifo \
+    --attributes FifoQueue=true,ContentBasedDeduplication=true
+
+Delete A Queue
+-----------------
+> aws sqs list-queues
+
+output:
+{
+    "QueueUrls": [
+        "https://sqs.us-east-1.amazonaws.com/748810634002/MyFifoQueue.fifo",
+        "https://sqs.us-east-1.amazonaws.com/748810634002/MyStandardQueue"
+    ]
+}
+from this list choose the queue you want to Delete
+> aws sqs delete-queue --queue-url  https://sqs.us-east-1.amazonaws.com/748810634002/MyFifoQueue.fifo
+> aws sqs delete-queue --queue-url  https://sqs.us-east-1.amazonaws.com/748810634002/MyStandardQueue
