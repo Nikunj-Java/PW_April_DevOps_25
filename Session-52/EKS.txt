@@ -30,3 +30,29 @@ tar -xzf eksctl_$PLATFORM.tar.gz -C /tmp && rm eksctl_$PLATFORM.tar.gz
 sudo install -m 0755 /tmp/eksctl /usr/local/bin && rm /tmp/eksctl
 --------------------------------------------------------------------
 > eksctl version
+
+****************************************************************************
+Setup a Cluster
+****************************************************************************
+> eksctl create cluster
+
+This will create cluster on your aws Amazon Elastic Kubernetes Service (EKS)
+
+ Create a Custom cluster
+
+ eksctl create cluster \
+  --name dev-cluster2 \
+  --region us-east-1 \
+  --nodegroup-name dev-nodes \
+  --node-type t2.micro \
+  --nodes 2 \
+  --nodes-min 2 \
+  --nodes-max 5 \
+  --managed
+
+******************************************************************
+Update Kubernetes config 
+******************************************************************
+so that we can talk to our server
+
+aws eks --region us-east-1 update-kubeconfig --name my-dev-cluster
